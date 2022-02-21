@@ -1,2 +1,3 @@
 # IFotos
-Clone of 
+Clone of StephenWeiXu/Webapp-Online-Album-Service
+
