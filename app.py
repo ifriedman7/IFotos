@@ -8,7 +8,7 @@ app = Flask(__name__, template_folder='templates')
 
 # Initialize MySQL database connector
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'IFotos12#'
 app.config['MYSQL_DB'] = 'project1'
 mysql.init_app(app)
 
