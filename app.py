@@ -7,9 +7,11 @@ import controllers
 app = Flask(__name__, template_folder='templates')
 
 # Initialize MySQL database connector
+app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'IFotos12#'
 app.config['MYSQL_DB'] = 'IFotos'
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql.init_app(app)
 
 # Register the controllers
