@@ -129,5 +129,5 @@ def get_hash(albumid, filename):
 	results = cur.fetchall()
 
 	username, album_title = results[0]
-	m = hashlib.md5(username + album_title + filename)
+	m = hashlib.md5(username + album_title + filename).encode('utf-8')
 	return m.hexdigest()
