@@ -50,8 +50,11 @@ h1{
 
 footer{
     position: relative;
-    top: 50px;
+	height: auto;
+/*    top: 50px;
     bottom: 0;
+	*/
+	background-color: #11FF65
 	font-family: Sans-serif;
 	font-size: 12px;	
 }
