@@ -76,6 +76,7 @@ def add_pic(picid, format, date, albumid):
 	cur = mysql.get_db().cursor()
 	cur.execute("INSERT INTO Photo (picid, format, date) VALUES (%s, %s, %s)", (picid, format, date))
 	cur.execute("INSERT INTO Contain (albumid, picid, caption, sequencenum) VALUES (%s, %s, %s, %s)", (albumid, picid, "", sequencenum+1))
+	cur.execute("COMMIT")
 	conn.commit()
 
 
