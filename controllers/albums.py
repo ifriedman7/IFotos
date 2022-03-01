@@ -123,7 +123,10 @@ def get_user_albums():
 def delete_album(albumid):
 #	conn = mysql.get_db().connection
 #	cur = conn.cursor()
-	cur = mysql.get_db().cursor()
+
+#	cur = mysql.get_db().cursor()
+	conn = mysql.connect()
+	cur = conn.cursor()
 
 	#Find if there is photo in the album and delete from filesystem
 	cur.execute("SELECT picid, format FROM Photo WHERE picid IN (SELECT picid FROM Contain WHERE albumid=%s)", [albumid])
@@ -138,9 +141,9 @@ def delete_album(albumid):
 	conn.commit()
 
 def add_album(username, album_title):
-#	conn = mysql.get_db().connection
-#	cur = conn.cursor()
-	cur = mysql.get_db().cursor()
+	conn = mysql.connect()
+	cur = conn.cursor()
+#	cur = mysql.get_db().cursor()
 	cur.execute("INSERT INTO\
 				Album(albumid, title, created, lastupdated, username)\
 	 			VALUES\
