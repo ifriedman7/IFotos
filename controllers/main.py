@@ -7,8 +7,7 @@ main = Blueprint('main', __name__, template_folder='templates')
 def main_route():
 #	cur = mysql.connection.cursor()
 	cur = mysql.get_db().cursor()
-#	cnx = mysql.connector.connect(user='root', database='IFotos', password='IFotos12#')
-#	cur = cnx.cursor()
+
 	query = "SELECT username FROM User"
 	cur.execute(query)
 	results = cur.fetchall() #results will be a tuple of tuples

@@ -86,7 +86,8 @@ def albums_route():
 	return render_template("albums.html", **options)
 
 def check_user_name(username):
-	cur = mysql.connection.cursor()
+#	cur = mysql.connection.cursor()
+	cur = mysql.get_db().cursor()
 	cur.execute("SELECT username FROM User WHERE username=%s", [username])
 	results = cur.fetchall()
 	if not results:
@@ -94,7 +95,8 @@ def check_user_name(username):
 	return True
 
 def check_album_id(albumid):
-	cur = mysql.connection.cursor()
+#	cur = mysql.connection.cursor()
+	cur = mysql.get_db().cursor()
 	cur.execute("SELECT albumid FROM Album WHERE albumid=%s", [albumid])
 	results = cur.fetchall()
 	if not results:
@@ -109,7 +111,8 @@ def get_user_albums():
 		abort(404)
 
 	albums = []
-	cur = mysql.connection.cursor()
+#	cur = mysql.connection.cursor()
+	cur = mysql.get_db().cursor()
 	cur.execute("SELECT albumid, title FROM Album WHERE username=%s", [username])
 	results = cur.fetchall()
 	for res in results:
@@ -118,7 +121,7 @@ def get_user_albums():
 	return albums, username	
 
 def delete_album(albumid):
-	conn = mysql.connection
+	conn = mysql.get_db().connection
 	cur = conn.cursor()
 
 	#Find if there is photo in the album and delete from filesystem
@@ -134,7 +137,7 @@ def delete_album(albumid):
 	conn.commit()
 
 def add_album(username, album_title):
-	conn = mysql.connection
+	conn = mysql.get_db().connection
 	cur = conn.cursor()
 	cur.execute("INSERT INTO\
 				Album(albumid, title, created, lastupdated, username)\

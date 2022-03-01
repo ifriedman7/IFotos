@@ -9,30 +9,35 @@ def pic_route():
 	if not check_pic_id(picid):
 		abort(404)
 
-	cur = mysql.connection.cursor()
+#	cur = mysql.connection.cursor()
+	cur = mysql.get_db().cursor()
 	cur.execute("SELECT format FROM Photo WHERE picid=%s", [picid])
 	results = cur.fetchall()
 	format = results[0][0]
 
-	cur = mysql.connection.cursor()
+#	cur = mysql.connection.cursor()
+	cur = mysql.get_db().cursor()
 	cur.execute("SELECT albumid FROM Contain WHERE picid=%s", [picid])
 	results = cur.fetchall()
 	albumid = results[0][0]
 
-	cur = mysql.connection.cursor()
+#	cur = mysql.connection.cursor()
+	cur = mysql.get_db().cursor()
 	cur.execute("SELECT sequencenum FROM Contain WHERE picid=%s", [picid])
 	results = cur.fetchall()
 	sequencenum = results[0][0]
 
 	if sequencenum > 0:
-		cur = mysql.connection.cursor()
+#	cur = mysql.connection.cursor()
+	cur = mysql.get_db().cursor()
 		cur.execute("SELECT picid FROM Contain WHERE albumid=%s AND sequencenum=%s", (albumid, sequencenum-1))
 		results = cur.fetchall()
 		prev_picid = results[0][0]
 	else:
 		prev_picid = ""
 
-	cur = mysql.connection.cursor()
+#	cur = mysql.connection.cursor()
+	cur = mysql.get_db().cursor()
 	cur.execute("SELECT picid FROM Contain WHERE albumid=%s AND sequencenum=%s", (albumid, sequencenum+1))
 	results = cur.fetchall()
 	if results:
@@ -51,7 +56,8 @@ def pic_route():
 	return render_template("pic.html", **options)
 
 def check_pic_id(picid):
-	cur = mysql.connection.cursor()
+#	cur = mysql.connection.cursor()
+	cur = mysql.get_db().cursor()
 	cur.execute("SELECT picid FROM Photo WHERE picid=%s", [picid])
 	results = cur.fetchall()
 	if results:
