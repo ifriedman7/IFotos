@@ -29,7 +29,7 @@ def pic_route():
 
 	if sequencenum > 0:
 #	cur = mysql.connection.cursor()
-	cur = mysql.get_db().cursor()
+		cur = mysql.get_db().cursor()
 		cur.execute("SELECT picid FROM Contain WHERE albumid=%s AND sequencenum=%s", (albumid, sequencenum-1))
 		results = cur.fetchall()
 		prev_picid = results[0][0]
