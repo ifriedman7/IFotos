@@ -13,7 +13,11 @@ app = Flask(__name__, template_folder='templates')
 #app.config['MYSQL_DB'] = 'IFotos'
 #app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
-#app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+#https://flask-mysql.readthedocs.io/en/latest/
+app.config['MYSQL_DATABASE_HOST'] = 'ifotos-deployer.servebeer.com'
+#default host is localhost
+app.config['MYSQL_DATABASE_PORT'] = 3306
+#default port is 3306
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'IFotos12#'
 app.config['MYSQL_DATABASE_DB'] = 'IFotos'
