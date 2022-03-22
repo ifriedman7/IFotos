@@ -1,4 +1,5 @@
 Flask==0.10.1
+pymysql
 Flask-MySQLdb==0.2.0
 gunicorn==18.0
 Jinja2==2.8
