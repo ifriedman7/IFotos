@@ -24,7 +24,7 @@ def album_edit_route():
 			if file and check_img_ext(file.filename):
 				picid = get_hash(albumid, file.filename)
 				if check_pic_exist(albumid, picid):  # if picid haven't been added
-					error_info = "Failed! Photo already exists in this album! Please choose abother photo"
+					error_info = "Failed! Photo already exists in this album! Please choose another photo"
 				else:	
 					format = file.filename[-3:]
 					date = time.strftime('%Y-%m-%d')

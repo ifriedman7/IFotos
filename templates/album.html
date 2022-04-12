@@ -12,7 +12,7 @@
               {% set pic_link_id = "pic_" + photo_id|string() + "_link" %}
             <tr>
             <td>
-                <a id="{{ pic_link_id }}" href="{{ url_for('pic.pic_route', id=photo_id) }}"><img src="{{ url_for('static', filename='images/'+pic) }}" width="100px" /></a>
+                <a id="{{ pic_link_id }}" href="{{ url_for('pic.pic_route', id=photo_id) }}"><img src="{{ url_for('static', filename='images/'+pic) }}" width="300px" /></a>
             </td>
 
             {% if edit %}
