@@ -27,8 +27,8 @@ app.config['MYSQL_DATABASE_HOST'] = 'ifotosdb'
 #default host is localhost
 app.config['MYSQL_DATABASE_PORT'] = 3306
 #default port is 3306
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'IFotos12#'
+app.config['MYSQL_DATABASE_USER'] = 'ifotos'
+app.config['MYSQL_DATABASE_PASSWORD'] = ''
 app.config['MYSQL_DATABASE_DB'] = 'IFotos'
 
 mysql.init_app(app)
@@ -57,7 +57,7 @@ app.register_blueprint(controllers.main)
 # Listen on external IPs
 # For us, listen to port 3000 so you can just run 'python app.py' to start the server
 #For uwsgi, dont app.run
-#if __name__ == '__main__':
+if __name__ == '__main__':
     # listen on external IPs
-#    app.run(host='0.0.0.0', port=3000, debug=True)
+    app.run(host='0.0.0.0', port=3000, debug=True)
 
