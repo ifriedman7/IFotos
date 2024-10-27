@@ -1,5 +1,5 @@
 /* SQL commands to load data into the created tables */
-
+USE IFotos;
 INSERT INTO User(username, firstname, lastname, password, email)
 VALUES
 ("sportslover", "Paul", "Walker", "paulpass93", "sportslover@hotmail.com");

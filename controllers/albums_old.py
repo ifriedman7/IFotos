@@ -1,6 +1,5 @@
 from flask import *
 from extensions import mysql
-from mysql import connector
 import os
 import time
 
@@ -87,9 +86,8 @@ def albums_route():
 	return render_template("albums.html", **options)
 
 def check_user_name(username):
-	cur = myconnection.cursor()
 #	cur = mysql.connection.cursor()
-#	cur = mysql.get_db().cursor()
+	cur = mysql.get_db().cursor()
 	cur.execute("SELECT username FROM User WHERE username=%s", [username])
 	results = cur.fetchall()
 	if not results:
@@ -97,9 +95,8 @@ def check_user_name(username):
 	return True
 
 def check_album_id(albumid):
-	cur = myconnection.cursor()
 #	cur = mysql.connection.cursor()
-#	cur = mysql.get_db().cursor()
+	cur = mysql.get_db().cursor()
 	cur.execute("SELECT albumid FROM Album WHERE albumid=%s", [albumid])
 	results = cur.fetchall()
 	if not results:
@@ -114,9 +111,8 @@ def get_user_albums():
 		abort(404)
 
 	albums = []
-	cur = myconnection.cursor()
 #	cur = mysql.connection.cursor()
-#	cur = mysql.get_db().cursor()
+	cur = mysql.get_db().cursor()
 	cur.execute("SELECT albumid, title FROM Album WHERE username=%s", [username])
 	results = cur.fetchall()
 	for res in results:
@@ -129,9 +125,8 @@ def delete_album(albumid):
 #	cur = conn.cursor()
 
 #	cur = mysql.get_db().cursor()
-#	conn = mysql.connect()
-	cur = myconnection.cursor()
-#	cur = conn.cursor()
+	conn = mysql.connect()
+	cur = conn.cursor()
 
 	#Find if there is photo in the album and delete from filesystem
 	cur.execute("SELECT picid, format FROM Photo WHERE picid IN (SELECT picid FROM Contain WHERE albumid=%s)", [albumid])
@@ -143,20 +138,17 @@ def delete_album(albumid):
 				os.remove(photo_path)
 
 	cur.execute("DELETE FROM Album WHERE albumid=%s", [albumid])
-	myconnection.commit()
-#	conn.commit()
+	conn.commit()
 
 def add_album(username, album_title):
-	cur = myconnection.cursor()
-#	conn = mysql.connect()
-#	cur = conn.cursor()
+	conn = mysql.connect()
+	cur = conn.cursor()
 #	cur = mysql.get_db().cursor()
 	cur.execute("INSERT INTO\
 				Album(albumid, title, created, lastupdated, username)\
 	 			VALUES\
 	 			(NULL, %s, NULL, NULL, %s)", [album_title, username])
-#	conn.commit()
-	myconnection.commit()
+	conn.commit()
 
 def check_album_exist(album_title):
 	user_albums, username = get_user_albums()
@@ -164,5 +156,4 @@ def check_album_exist(album_title):
 		if album_title == album_info[1]:
 			return True
 	return False
-
 

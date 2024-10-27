@@ -1,5 +1,6 @@
 from flask import *
 from extensions import mysql
+from mysql import connector
 import hashlib
 import time
 import os
@@ -47,24 +48,25 @@ def album_route():
 
 def delete_pic(picid):
 #	cur = mysql.connection.cursor()
-	cur = mysql.get_db().cursor()
+	cur = myconnection.cursor()
+#	cur = mysql.get_db().cursor()
 	cur.execute("SELECT format FROM Photo WHERE picid=%s", [picid])
 	results = cur.fetchall()
 	format = results[0][0]
-
-	#	cur = mysql.connection.cursor()
 	cur.execute("DELETE FROM Contain WHERE picid=%s", [picid])
 	cur.execute("DELETE FROM Photo WHERE picid=%s", [picid])
-	mysql.connection.commit()
+#	mysql.connection.commit()
+	myconnection.commit()
 
 	filename = os.path.join("static", "images", picid+"."+format)
 	if os.path.exists(filename):
 		os.remove(filename)
 
 def add_pic(picid, format, date, albumid):
+	cur = myconnection.cursor()
 #	cur = mysql.connection.cursor()
-	conn = mysql.connect()
-	cur = mysql.get_db().cursor()
+#	conn = mysql.connect()
+#	cur = mysql.get_db().cursor()
 	cur.execute("SELECT MAX(sequencenum) FROM Contain WHERE albumid=%s", [albumid])
 	results = cur.fetchall()
 	if not results[0][0] == None:
@@ -73,32 +75,37 @@ def add_pic(picid, format, date, albumid):
 		sequencenum = -1
 
 #	cur = mysql.connection.cursor()
-	cur = mysql.get_db().cursor()
+#	cur = mysql.get_db().cursor()
+	cur = myconnection.cursor()
 	cur.execute("INSERT INTO Photo (picid, format, date) VALUES (%s, %s, %s)", (picid, format, date))
 	cur.execute("INSERT INTO Contain (albumid, picid, caption, sequencenum) VALUES (%s, %s, %s, %s)", (albumid, picid, "", sequencenum+1))
 	cur.execute("COMMIT")
-	conn.commit()
+#	conn.commit()
+	myconnection.commit()
 
 
 
 def get_pics(albumid):
+	cur = myconnection.cursor()
 #	cur = mysql.connection.cursor()
-	cur = mysql.get_db().cursor()
+#	cur = mysql.get_db().cursor()
 	cur.execute("SELECT picid FROM Contain WHERE albumid=%s ORDER BY sequencenum", [albumid])
 	results = cur.fetchall()
 
 	pics = []
 	for res in results:
+		cur2 = myconnection.cursor()
 #		cur2 = mysql.connection.cursor()
-		cur2 = mysql.get_db().cursor()
+#		cur2 = mysql.get_db().cursor()
 		cur2.execute("SELECT format FROM Photo WHERE picid=%s", [res[0]])
 		results2 = cur2.fetchall()
 		pics.append(res[0]+'.'+results2[0][0])
 	return pics
 
 def check_pic_exist(albumid, picid):
+	cur = myconnection.cursor()
 #	cur = mysql.connection.cursor()
-	cur = mysql.get_db().cursor()
+#	cur = mysql.get_db().cursor()
 	cur.execute("SELECT picid FROM Contain WHERE albumid=%s", [albumid])
 	results = cur.fetchall()
 
@@ -116,8 +123,9 @@ def check_img_ext(filename):
 	return False
 
 def check_album_id(albumid):
+	cur = myconnection.cursor()
 #	cur = mysql.connection.cursor()
-	cur = mysql.get_db().cursor()
+#	cur = mysql.get_db().cursor()
 	cur.execute("SELECT albumid FROM Album WHERE albumid=%s", [albumid])
 	results = cur.fetchall()
 	if results:
@@ -126,8 +134,9 @@ def check_album_id(albumid):
 
 
 def get_hash(albumid, filename):
+	cur = myconnection.cursor()
 #	cur = mysql.connection.cursor()
-	cur = mysql.get_db().cursor()
+#	cur = mysql.get_db().cursor()
 	cur.execute("SELECT username, title FROM Album WHERE albumid=%s", [albumid])
 	results = cur.fetchall()
 
@@ -137,3 +146,4 @@ def get_hash(albumid, filename):
 	filename_enc = filename.encode('utf-8')
 	m = hashlib.md5(username_enc + album_title_enc + filename_enc)
 	return m.hexdigest()
+

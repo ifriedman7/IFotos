@@ -1,3 +1,5 @@
+CREATE DATABASE IF NOT EXISTS IFotos;
+USE IFotos;
 /* SQL commands to create tables */
 
 -- DROP TABLE Contain;
@@ -5,7 +7,7 @@
 -- DROP TABLE User;
 -- DROP TABLE Photo;
 
-CREATE TABLE User(
+CREATE TABLE IF NOT EXISTS User(
 	username VARCHAR(20),
 	firstname VARCHAR(20),
 	lastname VARCHAR(20),
@@ -14,7 +16,7 @@ CREATE TABLE User(
 	PRIMARY KEY (username)
 );
 
-CREATE TABLE Album(
+CREATE TABLE IF NOT EXISTS Album(
 	albumid INT NOT NULL AUTO_INCREMENT,
 	title VARCHAR(50),
 	created DATE,
@@ -24,14 +26,14 @@ CREATE TABLE Album(
 	FOREIGN KEY (username) REFERENCES User(username) ON DELETE CASCADE
 );
 
-CREATE TABLE Photo(
+CREATE TABLE IF NOT EXISTS Photo(
 	picid VARCHAR(40),
 	format CHAR(3),  /* format is fixed-length for 3 characters */
 	date DATE,
 	PRIMARY KEY (picid)
 );
 
-CREATE TABLE Contain(
+CREATE TABLE IF NOT EXISTS Contain(
 	albumid INT,
 	picid VARCHAR(40),
 	caption VARCHAR(255) DEFAULT "",
@@ -59,3 +61,4 @@ CREATE TRIGGER delete_pic_when_delete_album BEFORE DELETE
 ON Album
 FOR EACH ROW
 DELETE FROM Photo WHERE picid IN (SELECT picid FROM Contain WHERE albumid=OLD.albumid);
+
