@@ -1,8 +1,6 @@
 from flask import *
-from extensions import mysql
-from mysql import connector
+from .db import get_db
 import os
-import time
 
 albums = Blueprint('albums', __name__, template_folder='templates')
 
@@ -87,9 +85,8 @@ def albums_route():
 	return render_template("albums.html", **options)
 
 def check_user_name(username):
-	cur = myconnection.cursor()
-#	cur = mysql.connection.cursor()
-#	cur = mysql.get_db().cursor()
+	db = get_db()
+	cur = db.cursor()
 	cur.execute("SELECT username FROM User WHERE username=%s", [username])
 	results = cur.fetchall()
 	if not results:
@@ -97,9 +94,8 @@ def check_user_name(username):
 	return True
 
 def check_album_id(albumid):
-	cur = myconnection.cursor()
-#	cur = mysql.connection.cursor()
-#	cur = mysql.get_db().cursor()
+	db = get_db()
+	cur = db.cursor()
 	cur.execute("SELECT albumid FROM Album WHERE albumid=%s", [albumid])
 	results = cur.fetchall()
 	if not results:
@@ -108,15 +104,14 @@ def check_album_id(albumid):
 
 ''' Utility functions to query database and get results '''
 def get_user_albums():
+	db = get_db()
+	cur = db.cursor()
 	username = request.args.get('username') # Get username from template file albums.html
 
 	if not check_user_name(username):
 		abort(404)
 
 	albums = []
-	cur = myconnection.cursor()
-#	cur = mysql.connection.cursor()
-#	cur = mysql.get_db().cursor()
 	cur.execute("SELECT albumid, title FROM Album WHERE username=%s", [username])
 	results = cur.fetchall()
 	for res in results:
@@ -125,13 +120,8 @@ def get_user_albums():
 	return albums, username	
 
 def delete_album(albumid):
-#	conn = mysql.get_db().connection
-#	cur = conn.cursor()
-
-#	cur = mysql.get_db().cursor()
-#	conn = mysql.connect()
-	cur = myconnection.cursor()
-#	cur = conn.cursor()
+	db = get_db()
+	cur = db.cursor()
 
 	#Find if there is photo in the album and delete from filesystem
 	cur.execute("SELECT picid, format FROM Photo WHERE picid IN (SELECT picid FROM Contain WHERE albumid=%s)", [albumid])
@@ -143,20 +133,17 @@ def delete_album(albumid):
 				os.remove(photo_path)
 
 	cur.execute("DELETE FROM Album WHERE albumid=%s", [albumid])
-	myconnection.commit()
-#	conn.commit()
+	db.commit()
+
 
 def add_album(username, album_title):
-	cur = myconnection.cursor()
-#	conn = mysql.connect()
-#	cur = conn.cursor()
-#	cur = mysql.get_db().cursor()
+	db = get_db()
+	cur = db.cursor()
 	cur.execute("INSERT INTO\
 				Album(albumid, title, created, lastupdated, username)\
 	 			VALUES\
 	 			(NULL, %s, NULL, NULL, %s)", [album_title, username])
-#	conn.commit()
-	myconnection.commit()
+	db.commit()
 
 def check_album_exist(album_title):
 	user_albums, username = get_user_albums()

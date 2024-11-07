@@ -1,14 +1,13 @@
 from flask import *
-from extensions import mysql
-from mysql import connector
+from .db import get_db
 
 main = Blueprint('main', __name__, template_folder='templates')
 
+
 @main.route('/')
 def main_route():
-	cur = myconnection.cursor()
-#	cur = mysql.connection.cursor()
-#	cur = mysql.get_db().cursor()
+	db = get_db()
+	cur = db.cursor()
 
 	query = "SELECT username FROM User"
 	cur.execute(query)
@@ -22,3 +21,4 @@ def main_route():
 		"usernames": usernames
 	}
 	return render_template("index.html", **options)
+

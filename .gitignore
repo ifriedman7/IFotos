@@ -2,3 +2,5 @@ venv/
 static/images
 *.pyc
 .DS_Store
+*.log
+*pid
