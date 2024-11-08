@@ -24,7 +24,7 @@ app.register_blueprint(controllers.main)
 # Listen on external IPs
 # Listen to port 3000 so you can just run 'python app.py' to start the server
 # For uwsgi, dont app.run or init_app. Comment out next 3 lines.
-mysql.init_app(app)
+# mysql.init_app(app)
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3000, debug=True)
 
